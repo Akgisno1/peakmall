@@ -1,0 +1,3 @@
+This is a placeholder. The noise.png can be generated or replaced with an actual noise texture file.
+You can create a noise pattern using an online tool or Photoshop and replace this file.
+For now, the noise texture is optional and won't break the site.
