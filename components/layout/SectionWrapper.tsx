@@ -14,7 +14,7 @@ export function SectionWrapper({
     return (
         <section
             id={id}
-            className={`relative w-full ${minHeight} flex flex-col ${className}`}
+            className={`relative w-full ${minHeight} flex flex-col scroll-mt-20 lg:scroll-mt-28 ${className}`}
         >
             {children}
         </section>

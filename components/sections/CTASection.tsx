@@ -121,7 +121,7 @@ export function CTASection() {
                 key={path.id}
                 onClick={() => setActivePath(path.id)}
                 className={cn(
-                  "cta-card opacity-0 text-left rounded-2xl p-8 border transition-all duration-400 group",
+                  "cta-card group rounded-2xl border p-8 text-left opacity-0 transition-all duration-500",
                   `bg-gradient-to-br ${path.color}`,
                   path.borderColor,
                   "hover:scale-[1.02] hover:shadow-xl",

@@ -22,7 +22,7 @@ export function SideProgress() {
                     {/* Dot */}
                     <div
                         className={cn(
-                            "w-2 h-2 rounded-full transition-all duration-400 z-10",
+                            "z-10 h-2 w-2 rounded-full transition-all duration-500",
                             activeSection === section.id
                                 ? "bg-brand-gold scale-125"
                                 : index < currentIndex

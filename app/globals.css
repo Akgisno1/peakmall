@@ -1,18 +1,30 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-brand-black: #0a0a0a;
+  --color-brand-charcoal: #141414;
+  --color-brand-gold: #c9a96e;
+  --color-brand-gold-light: #e8c98a;
+  --color-brand-white: #f5f5f0;
+  --color-brand-cream: #ede8df;
+  --color-brand-accent: #2a6db5;
+
+  /* Maps to next/font CSS variables on <html> (see layout.tsx) */
+  --font-body: var(--font-stack-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-stack-display), ui-serif, Georgia, Cambria,
+    "Times New Roman", serif;
+}
 
 @layer base {
   :root {
-    --font-display: "Cormorant Garamond", serif;
-    --font-body: "Inter", sans-serif;
-    --font-mono: "JetBrains Mono", monospace;
-
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
     --background: 10 10 10;
     --foreground: 245 245 240;
   }
 
-  * {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -20,34 +32,34 @@
 
   html {
     scroll-behavior: smooth;
-    background-color: #0A0A0A;
-    color: #F5F5F0;
+    background-color: #0a0a0a;
+    color: #f5f5f0;
   }
 
   body {
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
 
-  /* Hide scrollbar visually but keep functionality */
   ::-webkit-scrollbar {
     width: 4px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #0A0A0A;
+    background: #0a0a0a;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #C9A96E;
+    background: #c9a96e;
     border-radius: 2px;
   }
 }
 
 @layer utilities {
   .text-gradient-gold {
-    background: linear-gradient(135deg, #C9A96E 0%, #E8C98A 50%, #C9A96E 100%);
+    background: linear-gradient(135deg, #c9a96e 0%, #e8c98a 50%, #c9a96e 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -56,6 +68,7 @@
   .glass {
     background: rgba(255, 255, 255, 0.04);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
@@ -63,7 +76,6 @@
     padding: 6rem 1.5rem;
   }
 
-  /* Cinematic hero headline */
   .text-hero {
     font-family: var(--font-display);
     font-size: clamp(3.5rem, 8vw, 9rem);
@@ -72,7 +84,6 @@
     letter-spacing: -0.02em;
   }
 
-  /* Section headline */
   .text-section-title {
     font-family: var(--font-display);
     font-size: clamp(2rem, 4vw, 4.5rem);
@@ -81,41 +92,42 @@
     letter-spacing: -0.01em;
   }
 
-  /* Subheading */
   .text-sub {
     font-family: var(--font-body);
     font-size: clamp(0.875rem, 1.2vw, 1rem);
     font-weight: 400;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: #C9A96E;
+    color: #c9a96e;
   }
 
-  /* Body copy */
   .text-body {
     font-family: var(--font-body);
     font-size: clamp(1rem, 1.3vw, 1.125rem);
     line-height: 1.7;
-    color: #EDE8DF;
+    color: #ede8df;
   }
 
-  /* Stat number */
   .text-stat {
     font-family: var(--font-display);
     font-size: clamp(2.5rem, 5vw, 5rem);
     font-weight: 600;
-    color: #C9A96E;
+    color: #c9a96e;
   }
 
   .container-deck {
     max-width: 1440px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
   }
 
   @media (min-width: 1024px) {
     .section-padding {
       padding: 8rem 6rem;
+    }
+
+    .container-deck {
+      padding-inline: 6rem;
     }
   }
 }

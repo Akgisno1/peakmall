@@ -97,40 +97,41 @@ export function HeroSection() {
             /> */}
 
       {/* Content */}
-      <div className="relative z-10 container-deck flex flex-col items-start justify-center min-h-screen py-32">
-        {/* Eyebrow */}
-        <p className="hero-eyebrow opacity-0 text-sub text-brand-gold mb-6 tracking-[0.3em]">
-          East Rutherford, New Jersey · USA
-        </p>
+      <div className="relative z-10 flex min-h-[100dvh] w-full flex-col">
+        <div className="container-deck flex flex-1 flex-col justify-center pb-8 pt-28 lg:pt-36">
+          {/* Eyebrow */}
+          <p className="hero-eyebrow opacity-0 text-sub mb-6 tracking-[0.3em] text-brand-gold">
+            East Rutherford, New Jersey · USA
+          </p>
 
-        {/* Headline */}
-        <h1 className="overflow-hidden mb-6">
-          <span className="hero-headline-line block opacity-0 font-display font-light text-hero text-brand-white leading-[0.95]">
-            Where the World
-          </span>
-          <span className="hero-headline-line block opacity-0 font-display font-light text-hero text-gradient-gold leading-[0.95]">
-            Comes to Dream.
-          </span>
-        </h1>
+          {/* Headline */}
+          <h1 className="mb-6 overflow-hidden">
+            <span className="hero-headline-line block opacity-0 font-display text-hero font-light leading-[0.95] text-brand-white">
+              Where the World
+            </span>
+            <span className="hero-headline-line block opacity-0 font-display text-hero font-light leading-[0.95] text-gradient-gold">
+              Comes to Dream.
+            </span>
+          </h1>
 
-        {/* Sub */}
-        <p
-          ref={subRef}
-          className="opacity-0 max-w-xl text-body text-brand-cream/80 mb-10 text-lg leading-relaxed"
-        >
-          3 million square feet. 450+ retailers. 16 world-class attractions. The
-          most visited destination on the East Coast — now open for partnerships
-          that define the future of retail.
-        </p>
+          {/* Sub */}
+          <p
+            ref={subRef}
+            className="text-body opacity-0 mb-10 max-w-xl text-lg leading-relaxed text-brand-cream/80"
+          >
+            3 million square feet. 450+ retailers. 16 world-class attractions.
+            The most visited destination on the East Coast — now open for
+            partnerships that define the future of retail.
+          </p>
 
-        {/* CTAs */}
-        <div ref={ctaRef} className="opacity-0 flex flex-wrap gap-4">
-          <CTAButton href="#contact">Become a Partner</CTAButton>
-          <CTAButtonGhost href="#why">Explore the Opportunity</CTAButtonGhost>
+          {/* CTAs */}
+          <div ref={ctaRef} className="opacity-0 flex flex-wrap gap-4">
+            <CTAButton href="#contact">Become a Partner</CTAButton>
+            <CTAButtonGhost href="#why">Explore the Opportunity</CTAButtonGhost>
+          </div>
         </div>
 
-        {/* Stats bar — appears below CTAs */}
-        <div className="absolute bottom-16 left-0 right-0 container-deck">
+        <div className="container-deck pb-28 pt-4 lg:pb-32">
           <HeroStatsBar />
         </div>
       </div>
@@ -138,7 +139,7 @@ export function HeroSection() {
       {/* Scroll Indicator */}
       <div
         ref={scrollRef}
-        className="opacity-0 absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+        className="opacity-0 absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 lg:bottom-8"
       >
         <span className="text-brand-white/40 text-xs uppercase tracking-widest">
           Scroll

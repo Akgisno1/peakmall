@@ -48,7 +48,7 @@ export function AttractionsSection() {
     >
       <div className="absolute inset-0 z-0">
         <div
-          className="w-full h-full opacity-15"
+          className="h-full w-full bg-cover bg-center opacity-20"
           style={{ backgroundImage: "url('/images/attractions-bg.jpg')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-brand-black via-brand-black/80 to-brand-black" />

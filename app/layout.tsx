@@ -5,14 +5,14 @@ import { NavigationProvider } from "@/lib/context/NavigationContext";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-body",
+  variable: "--font-stack-sans",
   display: "swap",
 });
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["300", "400", "600", "700"],
-  variable: "--font-display",
+  variable: "--font-stack-display",
   display: "swap",
 });
 

@@ -50,7 +50,7 @@ export function RetailSection() {
     <SectionWrapper id="retail" className="justify-center py-24">
       <div className="absolute inset-0 z-0">
         <div
-          className="w-full h-full opacity-10"
+          className="h-full w-full bg-cover bg-center opacity-20"
           style={{ backgroundImage: "url('/images/retail-bg.jpg')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-brand-black via-brand-black/90 to-brand-black" />
@@ -149,7 +149,7 @@ export function RetailSection() {
             {AVAILABLE_SPACES.map((space) => (
               <div
                 key={space.type}
-                className="group glass border border-white/8 hover:border-brand-gold/40 rounded-xl p-6 transition-all duration-400 cursor-pointer"
+                className="group glass cursor-pointer rounded-xl border border-white/8 p-6 transition-all duration-500 hover:border-brand-gold/40"
               >
                 <div className="text-brand-gold font-medium text-sm uppercase tracking-widest mb-2">
                   {space.type}

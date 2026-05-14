@@ -70,8 +70,8 @@ export function Navbar() {
   return (
     <>
       {/* Desktop Navbar */}
-      <nav className="hidden lg:block fixed top-0 left-0 right-0 z-50">
-        <div className="backdrop-blur-md bg-white/10 border-b border-white/20 py-6 px-8">
+      <nav className="fixed left-0 right-0 top-0 z-50 hidden lg:block">
+        <div className="border-b border-white/10 bg-brand-black/70 px-8 py-5 backdrop-blur-xl">
           <div className="container-deck flex items-center justify-between">
             {/* Logo - Cormorant Garamond like Hero */}
             <button
@@ -141,10 +141,10 @@ export function Navbar() {
           ref={panelRef}
           className="fixed top-0 right-0 h-screen z-50"
           style={{
-            width: "60%",
-            background: "rgba(255, 255, 255, 0.1)",
-            backdropFilter: "blur(12px)",
-            borderLeft: "1px solid rgba(255, 255, 255, 0.2)",
+            width: "min(85vw, 320px)",
+            background: "rgba(10, 10, 10, 0.92)",
+            backdropFilter: "blur(16px)",
+            borderLeft: "1px solid rgba(201, 169, 110, 0.2)",
             transform: menuOpen ? "translateX(0)" : "translateX(100%)",
           }}
         >

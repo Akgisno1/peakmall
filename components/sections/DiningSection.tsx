@@ -77,7 +77,7 @@ export function DiningSection() {
           {DINING_DATA.categories.map((cat) => (
             <div
               key={cat.name}
-              className="dining-card opacity-0 glass border border-white/8 hover:border-brand-gold/40 rounded-xl p-6 group transition-all duration-400"
+              className="dining-card group glass rounded-xl border border-white/8 p-6 opacity-0 transition-all duration-500 hover:border-brand-gold/40"
             >
               <div className="text-brand-gold text-2xl mb-4">{cat.icon}</div>
               <h4 className="text-brand-white font-medium text-sm uppercase tracking-wider mb-3">
