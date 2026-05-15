@@ -127,15 +127,13 @@ export function WhySection() {
             </div>
           </div>
 
-          {/* Map Placeholder */}
-          <div className="relative rounded-2xl overflow-hidden aspect-video lg:aspect-auto lg:h-80 bg-brand-black border border-white/10">
+          <div className="relative aspect-video overflow-hidden rounded-2xl border border-white/10 bg-brand-black lg:aspect-auto lg:h-80">
             <div
-              className="w-full h-full bg-cover bg-center opacity-70"
-              style={{ backgroundImage: "url('/images/aerial-map.jpg')" }}
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: "url('/images/aerial-map.png')" }}
             />
-            {/* Location Pin Overlay */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="glass px-4 py-2 rounded-full border border-brand-gold/40 text-brand-gold text-sm font-medium">
+              <div className="glass rounded-full border border-brand-gold/40 px-4 py-2 text-sm font-medium text-brand-gold">
                 📍 American Dream · East Rutherford, NJ
               </div>
             </div>

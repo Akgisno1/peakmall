@@ -40,6 +40,23 @@ export function EventsSection() {
     );
   }, []);
 
+  useGSAP(
+    () => {
+      gsap.fromTo(
+        ".venue-visual-layer",
+        { opacity: 0, scale: 1.04, filter: "blur(6px)" },
+        {
+          opacity: 1,
+          scale: 1,
+          filter: "blur(0px)",
+          duration: 0.75,
+          ease: "power3.out",
+        },
+      );
+    },
+    { dependencies: [activeVenue.id], revertOnUpdate: true },
+  );
+
   return (
     <SectionWrapper
       id="events"
@@ -95,14 +112,14 @@ export function EventsSection() {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
-            <div className="relative rounded-2xl overflow-hidden h-80 lg:h-[400px] border border-white/10 bg-brand-charcoal">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_400px]">
+            <div className="venue-visual-layer relative h-80 overflow-hidden rounded-2xl border border-white/10 bg-brand-charcoal lg:h-[400px]">
               <div
                 key={activeVenue.id}
-                className="w-full h-full bg-cover bg-center transition-opacity duration-500"
+                className="absolute inset-0 bg-cover bg-center transition-opacity duration-500"
                 style={{ backgroundImage: `url('${activeVenue.image}')` }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-black/85 to-transparent" />
               <div className="absolute top-4 right-4 glass border border-brand-gold/40 px-4 py-2 rounded-full">
                 <span className="text-brand-gold font-display text-xl font-semibold">
                   {activeVenue.capacity}

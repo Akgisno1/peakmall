@@ -1,7 +1,7 @@
 export const PROPERTY_STATS = {
   scale: [
     {
-      value: "3,000,000",
+      value: "3M",
       suffix: " sq ft",
       label: "Total GLA",
       icon: "building",

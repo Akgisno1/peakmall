@@ -1,7 +1,11 @@
+import { tenantLogoPath } from "@/lib/assets";
+
 export const TENANT_CATEGORIES = [
   {
     name: "Luxury & Designer",
+    slug: "luxury",
     count: 50,
+    bgImage: "/images/retail-luxury.png",
     tenants: [
       "Hermès",
       "Louis Vuitton",
@@ -17,7 +21,9 @@ export const TENANT_CATEGORIES = [
   },
   {
     name: "Premium Retail",
+    slug: "premium",
     count: 120,
+    bgImage: "/images/retail-premium.png",
     tenants: [
       "Zara",
       "H&M",
@@ -33,7 +39,9 @@ export const TENANT_CATEGORIES = [
   },
   {
     name: "Flagship Stores",
+    slug: "flagship",
     count: 25,
+    bgImage: "/images/retail-flagship.png",
     tenants: [
       "Primark (largest US store)",
       "Zara (flagship)",
@@ -44,7 +52,9 @@ export const TENANT_CATEGORIES = [
   },
   {
     name: "Dining & F&B",
+    slug: "dining",
     count: 100,
+    bgImage: "/images/retail-dining.png",
     tenants: [
       "Casa Cipriani",
       "Don Angie",
@@ -57,7 +67,9 @@ export const TENANT_CATEGORIES = [
   },
   {
     name: "Entertainment",
+    slug: "entertainment",
     count: 16,
+    bgImage: "/images/retail-entertainment.png",
     tenants: [
       "Nickelodeon Universe",
       "DreamWorks Water Park",
@@ -67,7 +79,12 @@ export const TENANT_CATEGORIES = [
       "Legoland Discovery",
     ],
   },
-];
+] as const;
+
+/** Logo file paths for each tenant (PNG in public/images/logos/). */
+export function getTenantLogo(tenantName: string): string {
+  return tenantLogoPath(tenantName);
+}
 
 export const RETAIL_STATS = [
   { value: "450+", label: "Total Tenants", sub: "Across all categories" },

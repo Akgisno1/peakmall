@@ -43,6 +43,11 @@
     overflow-x: hidden;
   }
 
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
   ::-webkit-scrollbar {
     width: 4px;
   }
@@ -121,6 +126,18 @@
     padding-inline: 1.5rem;
   }
 
+  /* Tablet (768px+) */
+  @media (min-width: 768px) {
+    .container-deck {
+      padding-inline: 2.5rem;
+    }
+
+    .section-padding {
+      padding: 7rem 2.5rem;
+    }
+  }
+
+  /* Desktop (1024px+) */
   @media (min-width: 1024px) {
     .section-padding {
       padding: 8rem 6rem;

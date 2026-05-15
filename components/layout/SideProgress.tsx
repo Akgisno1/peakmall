@@ -8,7 +8,7 @@ export function SideProgress() {
     const currentIndex = SECTIONS.findIndex((s) => s.id === activeSection);
 
     return (
-        <div className="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col items-center gap-3">
+        <div className="fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-3 md:right-6 md:flex lg:right-6">
             {/* Progress line */}
             <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-white/10" />
 

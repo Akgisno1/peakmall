@@ -49,7 +49,7 @@ export function AttractionsSection() {
       <div className="absolute inset-0 z-0">
         <div
           className="h-full w-full bg-cover bg-center opacity-20"
-          style={{ backgroundImage: "url('/images/attractions-bg.jpg')" }}
+          style={{ backgroundImage: "url('/images/attractions-bg.png')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-brand-black via-brand-black/80 to-brand-black" />
       </div>
@@ -95,10 +95,10 @@ export function AttractionsSection() {
             ))}
           </div>
 
-          <div className="relative rounded-2xl overflow-hidden min-h-[400px] border border-white/10">
+          <div className="relative min-h-[400px] overflow-hidden rounded-2xl border border-white/10">
             <div
               key={activeAttraction.id}
-              className="absolute inset-0 w-full h-full bg-cover bg-center opacity-60 transition-all duration-700"
+              className="absolute inset-0 bg-cover bg-center transition-all duration-700"
               style={{ backgroundImage: `url('${activeAttraction.image}')` }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/50 to-transparent" />

@@ -18,7 +18,7 @@ export const EVENTS_DATA = {
         "360° sightlines",
         "VIP suites",
       ],
-      image: "/images/venue-arena.jpg",
+      image: "/images/venue-arena.png",
     },
     {
       id: "performing-arts",
@@ -31,7 +31,7 @@ export const EVENTS_DATA = {
         "Orchestra pit",
         "Premium acoustic treatment",
       ],
-      image: "/images/venue-pac.jpg",
+      image: "/images/venue-pac.png",
     },
     {
       id: "expo-hall",
@@ -44,7 +44,7 @@ export const EVENTS_DATA = {
         "Built-in AV",
         "Full catering kitchen",
       ],
-      image: "/images/venue-expo.jpg",
+      image: "/images/venue-expo.png",
     },
     {
       id: "outdoor-plaza",
@@ -57,7 +57,7 @@ export const EVENTS_DATA = {
         "Brand integration zones",
         "Year-round use",
       ],
-      image: "/images/venue-plaza.jpg",
+      image: "/images/venue-plaza.png",
     },
   ],
 

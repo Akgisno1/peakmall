@@ -7,7 +7,7 @@ export interface SectionConfig {
 
 export const SECTIONS: SectionConfig[] = [
     { id: "hero", label: "Experience", shortLabel: "01" },
-    { id: "why", label: "Why Here", shortLabel: "02" },
+    { id: "why", label: "Why\u00A0Here", shortLabel: "02" },
     { id: "retail", label: "Retail", shortLabel: "03" },
     { id: "luxury", label: "Luxury", shortLabel: "04" },
     { id: "dining", label: "Dining", shortLabel: "05" },

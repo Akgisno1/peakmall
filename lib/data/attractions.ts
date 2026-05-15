@@ -6,7 +6,7 @@ export const ATTRACTIONS = [
     description:
       "35-acre indoor theme park — the largest in North America. 35 rides and attractions, 8 roller coasters.",
     stats: { visitors: "3M+/yr", size: "8 acres", rides: "35" },
-    image: "/images/attraction-nickelodeon.jpg",
+    image: "/images/attraction-nickelodeon.png",
     color: "#FF6B35",
     icon: "🎢",
   },
@@ -17,7 +17,7 @@ export const ATTRACTIONS = [
     description:
       "The largest indoor water park in North America. 40+ slides and attractions, 1.5M gallon wave pool.",
     stats: { visitors: "1.5M+/yr", size: "1.5M sqft", slides: "40+" },
-    image: "/images/attraction-waterpark.jpg",
+    image: "/images/attraction-waterpark.png",
     color: "#00B4D8",
     icon: "🌊",
   },
@@ -32,7 +32,7 @@ export const ATTRACTIONS = [
       slope: "1,000 ft run",
       vertical: "62 ft",
     },
-    image: "/images/attraction-ski.jpg",
+    image: "/images/attraction-ski.png",
     color: "#ADE8F4",
     icon: "⛷️",
   },
@@ -47,7 +47,7 @@ export const ATTRACTIONS = [
       events: "200+/yr",
       capacity: "3,000 spectators",
     },
-    image: "/images/attraction-ice.jpg",
+    image: "/images/attraction-ice.png",
     color: "#90E0EF",
     icon: "🏒",
   },
@@ -58,7 +58,7 @@ export const ATTRACTIONS = [
     description:
       "Interactive Lego-themed attraction with 4D cinema, rides, and building experiences.",
     stats: {},
-    image: "/images/attraction-lego.jpg",
+    image: "/images/attraction-lego.png",
     color: "#FFBE0B",
     icon: "🧱",
   },
@@ -69,7 +69,7 @@ export const ATTRACTIONS = [
     description:
       "18-hole themed mini golf — a family activation that extends dwell time across all age groups.",
     stats: {},
-    image: "/images/attraction-golf.jpg",
+    image: "/images/attraction-golf.png",
     color: "#FB5607",
     icon: "⛳",
   },

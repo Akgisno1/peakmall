@@ -1,194 +1,275 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useNavigation } from "@/lib/context/NavigationContext";
 import { SECTIONS } from "@/lib/data/sections";
 import { cn } from "@/lib/utils";
-import { gsap } from "gsap";
-import { Menu, X } from "lucide-react";
+import { EASINGS, DURATIONS } from "@/lib/gsap/easings";
 
 export function Navbar() {
   const { activeSection, scrollToSection } = useNavigation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
-  const itemsRef = useRef<(HTMLElement | null)[]>([]);
+
+  const barRef = useRef<HTMLDivElement>(null);
+  const desktopNavRef = useRef<HTMLElement>(null);
+  const linkRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const indicatorRef = useRef<HTMLDivElement>(null);
+
+  const moveIndicator = useCallback((index: number) => {
+    const nav = desktopNavRef.current;
+    const indicator = indicatorRef.current;
+    const btn = linkRefs.current[index];
+    if (!nav || !indicator || !btn) return;
+
+    const navRect = nav.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    const left = btnRect.left - navRect.left;
+    const width = btnRect.width;
+
+    gsap.to(indicator, {
+      x: left,
+      width,
+      duration: DURATIONS.fast,
+      ease: EASINGS.luxury,
+    });
+  }, []);
+
+  useLayoutEffect(() => {
+    const idx = SECTIONS.findIndex((s) => s.id === activeSection);
+    if (idx < 0) return;
+    requestAnimationFrame(() => moveIndicator(idx));
+  }, [activeSection, moveIndicator]);
 
   useEffect(() => {
-    if (menuOpen && overlayRef.current && panelRef.current) {
-      // Animate menu slide in from right
-      gsap.to(overlayRef.current, {
-        opacity: 1,
-        duration: 0.3,
-        ease: "power2.out",
-      });
+    const onResize = () => {
+      const idx = SECTIONS.findIndex((s) => s.id === activeSection);
+      if (idx >= 0) moveIndicator(idx);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [activeSection, moveIndicator]);
 
-      gsap.fromTo(
-        panelRef.current,
-        { x: "100%", opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.4, ease: "power3.out" },
-      );
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const bar = barRef.current;
+    const main = document.querySelector("main");
+    if (!bar || !main) return;
 
-      // Stagger menu items slide in from right
-      gsap.fromTo(
-        itemsRef.current.filter(Boolean),
-        { x: 30, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.3,
-          stagger: 0.06,
-          ease: "power2.out",
-          delay: 0.2,
-        },
-      );
-    } else if (!menuOpen && overlayRef.current && panelRef.current) {
-      // Animate menu slide out to right
-      gsap.to(overlayRef.current, {
-        opacity: 0,
-        duration: 0.3,
-        ease: "power2.in",
-      });
+    const st = ScrollTrigger.create({
+      trigger: main,
+      start: "top top",
+      end: "max",
+      onUpdate: (self) => {
+        const p = Math.min(self.scroll() / 200, 1);
+        gsap.to(bar, {
+          paddingTop: 12 + p * 6,
+          paddingBottom: 12 + p * 6,
+          backgroundColor: `rgba(10,10,10,${0.76 + p * 0.2})`,
+          borderColor: `rgba(255,255,255,${0.07 + p * 0.06})`,
+          duration: 0.25,
+          ease: EASINGS.luxury,
+          overwrite: "auto",
+        });
+      },
+    });
 
-      gsap.to(panelRef.current, {
-        x: "100%",
-        opacity: 0,
-        duration: 0.4,
-        ease: "power3.in",
-      });
-    }
+    return () => st.kill();
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [menuOpen]);
 
-  const handleNavClick = (sectionId: string) => {
-    scrollToSection(sectionId);
-    setMenuOpen(false);
-  };
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [menuOpen]);
 
-  const handleOverlayClick = () => {
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => {
+      if (mq.matches) setMenuOpen(false);
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  const handleSection = (id: string) => {
+    scrollToSection(id);
     setMenuOpen(false);
   };
 
   return (
-    <>
-      {/* Desktop Navbar */}
-      <nav className="fixed left-0 right-0 top-0 z-50 hidden lg:block">
-        <div className="border-b border-white/10 bg-brand-black/70 px-8 py-5 backdrop-blur-xl">
-          <div className="container-deck flex items-center justify-between">
-            {/* Logo - Cormorant Garamond like Hero */}
-            <button
-              onClick={() => handleNavClick("hero")}
-              className="font-display text-lg font-light tracking-[0.1em] text-brand-white hover:text-brand-gold transition-colors duration-300"
-            >
-              American<span className="text-brand-gold">Dream</span>
-            </button>
-
-            {/* Navigation Links - Equal spacing, matching hero section styling */}
-            <div className="flex items-center justify-center gap-12 flex-1 mx-16">
-              {SECTIONS.slice(1, -1).map((section) => (
-                <button
-                  key={section.id}
-                  onClick={() => handleNavClick(section.id)}
-                  className={cn(
-                    "font-body text-xs uppercase tracking-widest font-medium transition-all duration-300",
-                    activeSection === section.id
-                      ? "text-brand-gold"
-                      : "text-brand-cream/70 hover:text-brand-white",
-                  )}
-                >
-                  {section.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Partner CTA Button - Matching design system */}
-            <button
-              onClick={() => handleNavClick("contact")}
-              className="px-6 py-3 bg-brand-gold/90 hover:bg-brand-gold text-brand-black text-xs font-semibold uppercase tracking-widest transition-all duration-300"
-            >
-              Partner With Us
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Hamburger - Fixed top right */}
-      <button
-        onClick={() => setMenuOpen(!menuOpen)}
-        className="fixed top-6 right-6 z-[60] lg:hidden text-brand-white hover:text-brand-gold transition-colors duration-300"
-        aria-label="Toggle menu"
+    <header className="fixed left-0 right-0 top-0 z-50">
+      <div
+        ref={barRef}
+        className="border-b border-white/[0.08] bg-brand-black/75 px-4 py-3 backdrop-blur-xl sm:px-6 md:px-8 lg:py-4"
       >
-        {menuOpen ? <X size={28} /> : <Menu size={28} />}
-      </button>
+        <div className="container-deck flex items-center justify-between gap-3 md:gap-4">
+          <button
+            type="button"
+            onClick={() => handleSection("hero")}
+            className="group relative shrink-0 text-left"
+            aria-label="Go to start"
+          >
+            <span className="font-display text-base font-light tracking-[0.12em] text-brand-white transition-colors duration-300 group-hover:text-brand-gold-light sm:text-lg lg:text-xl">
+              American
+              <span className="text-brand-gold">Dream</span>
+            </span>
+            <span className="mt-0.5 block font-body text-[8px] uppercase tracking-[0.26em] text-brand-cream/50 sm:text-[9px]">
+              Sales deck
+            </span>
+          </button>
 
-      {/* Mobile Menu - Drawer from right (hidden on desktop) */}
-      <div className="lg:hidden">
-        {/* Overlay */}
-        <div
-          ref={overlayRef}
-          className={cn(
-            "fixed inset-0 z-40 pointer-events-none",
-            menuOpen && "pointer-events-auto",
-          )}
-          onClick={handleOverlayClick}
-          style={{
-            background: "rgba(0, 0, 0, 0.3)",
-            backdropFilter: menuOpen ? "blur(4px)" : "blur(0px)",
-            opacity: menuOpen ? 1 : 0,
-          }}
-        />
-
-        {/* Menu Panel */}
-        <div
-          ref={panelRef}
-          className="fixed top-0 right-0 h-screen z-50"
-          style={{
-            width: "min(85vw, 320px)",
-            background: "rgba(10, 10, 10, 0.92)",
-            backdropFilter: "blur(16px)",
-            borderLeft: "1px solid rgba(201, 169, 110, 0.2)",
-            transform: menuOpen ? "translateX(0)" : "translateX(100%)",
-          }}
-        >
-          <div className="pt-20 px-6 h-full flex flex-col">
-            {/* Logo in Mobile Menu */}
+          {/* Desktop */}
+          <nav
+            ref={desktopNavRef}
+            className="relative hidden flex-1 items-center justify-center gap-1 lg:flex lg:gap-2 xl:gap-3"
+            aria-label="Primary"
+          >
             <div
-              ref={(el) => {
-                if (el) itemsRef.current[0] = el as unknown as HTMLElement;
-              }}
-              className="mb-12"
-            >
+              ref={indicatorRef}
+              className="pointer-events-none absolute bottom-0 left-0 h-[2px] rounded-full bg-gradient-to-r from-brand-gold via-brand-gold-light to-brand-gold"
+              style={{ width: 0, transform: "translateX(0)" }}
+              aria-hidden
+            />
+            {SECTIONS.map((section, i) => (
               <button
-                onClick={() => handleNavClick("hero")}
-                className="font-display text-lg font-light tracking-[0.1em] text-brand-white hover:text-brand-gold transition-colors duration-300"
+                key={section.id}
+                type="button"
+                ref={(el) => {
+                  linkRefs.current[i] = el;
+                }}
+                onClick={() => handleSection(section.id)}
+                className={cn(
+                  "relative shrink-0 whitespace-nowrap px-1.5 py-2 font-body text-[10px] font-medium uppercase tracking-[0.14em] transition-colors duration-300 xl:px-2.5 xl:tracking-[0.16em] 2xl:text-[11px]",
+                  activeSection === section.id
+                    ? "text-brand-gold"
+                    : "text-brand-cream/65 hover:text-brand-white",
+                )}
               >
-                American<span className="text-brand-gold">Dream</span>
+                <span className="mr-1 hidden font-body text-[9px] tabular-nums text-brand-white/25 2xl:inline">
+                  {section.shortLabel}
+                </span>
+                {section.label}
               </button>
-            </div>
+            ))}
+          </nav>
 
-            {/* Menu Items */}
-            <div className="space-y-6 flex-1">
-              {SECTIONS.map((section, index) => (
-                <button
-                  key={section.id}
-                  ref={(el) => {
-                    if (el)
-                      itemsRef.current[index + 1] =
-                        el as unknown as HTMLElement;
-                  }}
-                  onClick={() => handleNavClick(section.id)}
-                  className={cn(
-                    "block w-full text-left font-body text-sm uppercase tracking-widest font-medium transition-all duration-300",
-                    activeSection === section.id
-                      ? "text-brand-gold"
-                      : "text-brand-cream/70 hover:text-brand-white",
-                  )}
-                >
-                  {section.label}
-                </button>
-              ))}
-            </div>
+          <div className="flex shrink-0 items-center gap-2 md:gap-3">
+            {/* Mobile + tablet: hamburger drawer */}
+            <button
+              type="button"
+              className="relative z-[60] flex h-11 w-11 flex-col items-center justify-center gap-1.5 rounded border border-white/10 bg-brand-charcoal text-brand-white lg:hidden"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-deck-nav"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              onClick={() => setMenuOpen((o) => !o)}
+            >
+              <span
+                className={cn(
+                  "block h-[2px] w-5 rounded-full bg-brand-gold transition-transform duration-300",
+                  menuOpen && "translate-y-[5px] rotate-45",
+                )}
+              />
+              <span
+                className={cn(
+                  "block h-[2px] w-5 rounded-full bg-brand-cream/80 transition-opacity duration-200",
+                  menuOpen && "opacity-0",
+                )}
+              />
+              <span
+                className={cn(
+                  "block h-[2px] w-5 rounded-full bg-brand-gold transition-transform duration-300",
+                  menuOpen && "-translate-y-[5px] -rotate-45",
+                )}
+              />
+            </button>
           </div>
         </div>
       </div>
-    </>
+
+      {/* Mobile & tablet drawer */}
+      <div
+        className={cn(
+          "fixed inset-0 z-[55] lg:hidden",
+          menuOpen ? "pointer-events-auto" : "pointer-events-none",
+        )}
+        aria-hidden={!menuOpen}
+      >
+        <button
+          type="button"
+          aria-label="Close menu"
+          className={cn(
+            "absolute inset-0 bg-brand-black/60 backdrop-blur-sm transition-opacity duration-300",
+            menuOpen ? "opacity-100" : "opacity-0",
+          )}
+          onClick={() => setMenuOpen(false)}
+        />
+
+        <nav
+          id="mobile-deck-nav"
+          className={cn(
+            "absolute right-0 top-0 flex h-[100dvh] w-[min(85vw,320px)] flex-col border-l border-brand-gold/30 bg-brand-black shadow-[-20px_0_60px_rgba(0,0,0,0.85)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:w-[60%] md:max-w-md",
+            menuOpen ? "translate-x-0" : "translate-x-full",
+          )}
+          aria-label="Navigation menu"
+        >
+          <div className="flex h-full flex-col px-5 pb-10 pt-[5.5rem]">
+            <p className="font-body text-[10px] uppercase tracking-[0.28em] text-brand-gold">
+              Navigate
+            </p>
+            <p className="mt-1 font-display text-2xl font-light text-brand-white">
+              Chapters
+            </p>
+
+            <ul className="mt-8 flex flex-1 flex-col gap-2 overflow-y-auto overscroll-contain">
+              {SECTIONS.map((section) => (
+                <li key={section.id}>
+                  <button
+                    type="button"
+                    onClick={() => handleSection(section.id)}
+                    className={cn(
+                      "flex w-full items-stretch overflow-hidden rounded-lg border text-left",
+                      activeSection === section.id
+                        ? "border-brand-gold bg-brand-gold/15"
+                        : "border-white/15 bg-brand-charcoal hover:border-brand-gold/40",
+                    )}
+                  >
+                    <span className="flex w-12 shrink-0 items-center justify-center border-r border-white/10 bg-brand-black font-body text-xs font-semibold tabular-nums text-brand-gold">
+                      {section.shortLabel}
+                    </span>
+                    <span className="flex min-w-0 flex-1 flex-col justify-center px-3 py-3">
+                      <span className="font-body text-xs font-semibold uppercase tracking-[0.14em] text-brand-white">
+                        {section.label}
+                      </span>
+                      <span className="mt-0.5 font-body text-[10px] text-brand-cream/60">
+                        Jump to section
+                      </span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
   );
 }

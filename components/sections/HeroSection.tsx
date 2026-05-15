@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SectionWrapper } from "@/components/layout/SectionWrapper";
 import { VideoBackground } from "@/components/ui/VideoBackground";
 import { CTAButton } from "@/components/ui/CTAButton";
@@ -13,70 +14,90 @@ export function HeroSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const tl = gsap.timeline({ delay: 0.3 });
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ delay: 0.3 });
 
-    // Eyebrow text
-    tl.fromTo(
-      ".hero-eyebrow",
-      { opacity: 0, y: 20, letterSpacing: "0.3em" },
-      {
-        opacity: 1,
-        y: 0,
-        letterSpacing: "0.15em",
-        duration: 1.2,
-        ease: "power3.out",
-      },
-    );
+      tl.fromTo(
+        ".hero-eyebrow",
+        { opacity: 0, y: 20, letterSpacing: "0.3em" },
+        {
+          opacity: 1,
+          y: 0,
+          letterSpacing: "0.15em",
+          duration: 1.2,
+          ease: "power3.out",
+        },
+      );
 
-    // Headline — character by character would use SplitText; here we do line by line
-    tl.fromTo(
-      ".hero-headline-line",
-      { opacity: 0, y: 60, skewY: 3 },
-      {
-        opacity: 1,
-        y: 0,
-        skewY: 0,
-        duration: 1.2,
-        ease: "power4.out",
-        stagger: 0.15,
-      },
-      "-=0.8",
-    );
+      tl.fromTo(
+        ".hero-headline-line",
+        { opacity: 0, y: 60, skewY: 3 },
+        {
+          opacity: 1,
+          y: 0,
+          skewY: 0,
+          duration: 1.2,
+          ease: "power4.out",
+          stagger: 0.15,
+        },
+        "-=0.8",
+      );
 
-    // Subheadline
-    tl.fromTo(
-      subRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" },
-      "-=0.5",
-    );
+      tl.fromTo(
+        subRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" },
+        "-=0.5",
+      );
 
-    // CTAs
-    tl.fromTo(
-      ctaRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-      "-=0.4",
-    );
+      tl.fromTo(
+        ctaRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+        "-=0.4",
+      );
 
-    // Scroll indicator
-    tl.fromTo(
-      scrollRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 1 },
-      "-=0.2",
-    );
+      tl.fromTo(
+        scrollRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 1 },
+        "-=0.2",
+      );
 
-    // Pulsing scroll indicator
-    gsap.to(".scroll-line", {
-      scaleY: 0,
-      transformOrigin: "top",
-      duration: 1,
-      ease: "power2.inOut",
-      repeat: -1,
-      yoyo: false,
-      repeatDelay: 0.5,
+      gsap.to(".scroll-line", {
+        scaleY: 0,
+        transformOrigin: "top",
+        duration: 1,
+        ease: "power2.inOut",
+        repeat: -1,
+        yoyo: false,
+        repeatDelay: 0.5,
+      });
+
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.to(".hero-parallax", {
+        y: 56,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.6,
+        },
+      });
+      gsap.to(".hero-video-depth", {
+        scale: 1.08,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
     });
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -84,8 +105,13 @@ export function HeroSection() {
       id="hero"
       className="items-center justify-center overflow-hidden"
     >
-      {/* Video Background */}
-      <VideoBackground src="/videos/hero-bg.mp4" overlay overlayOpacity={0.5} />
+      <div className="hero-video-depth absolute inset-0 z-0 origin-center overflow-hidden">
+        <VideoBackground
+          src="/videos/hero-bg.mp4"
+          overlay
+          overlayOpacity={0.5}
+        />
+      </div>
 
       {/* Noise texture overlay for depth - optional */}
       {/* <div
@@ -97,7 +123,7 @@ export function HeroSection() {
             /> */}
 
       {/* Content */}
-      <div className="relative z-10 flex min-h-[100dvh] w-full flex-col">
+      <div className="hero-parallax relative z-10 flex min-h-[100dvh] w-full flex-col will-change-transform">
         <div className="container-deck flex flex-1 flex-col justify-center pb-8 pt-28 lg:pt-36">
           {/* Eyebrow */}
           <p className="hero-eyebrow opacity-0 text-sub mb-6 tracking-[0.3em] text-brand-gold">

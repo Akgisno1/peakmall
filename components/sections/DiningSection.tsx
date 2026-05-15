@@ -118,23 +118,22 @@ export function DiningSection() {
           ))}
         </div>
 
-        <div className="mt-16 grid grid-cols-3 gap-2 rounded-xl overflow-hidden h-48 md:h-64">
-          {[
-            "/images/dining-1.jpg",
-            "/images/dining-2.jpg",
-            "/images/dining-3.jpg",
-          ].map((src, i) => (
-            <div
-              key={i}
-              className="relative overflow-hidden group bg-brand-charcoal"
-            >
+        <div className="mt-16 grid h-48 grid-cols-3 gap-2 overflow-hidden rounded-xl md:h-64">
+          {["Dining moment 1", "Dining moment 2", "Dining moment 3"].map(
+            (label, i) => (
               <div
-                className="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-700"
-                style={{ backgroundImage: `url('${src}')` }}
-              />
-              <div className="absolute inset-0 bg-brand-black/20 group-hover:bg-brand-black/0 transition-all duration-300" />
-            </div>
-          ))}
+                key={label}
+                className="relative min-h-0 overflow-hidden rounded-lg bg-brand-charcoal"
+              >
+                <div
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{
+                    backgroundImage: `url('/images/dining-${i + 1}.png')`,
+                  }}
+                />
+              </div>
+            ),
+          )}
         </div>
       </div>
     </SectionWrapper>

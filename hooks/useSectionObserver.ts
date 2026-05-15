@@ -1,31 +1,54 @@
 "use client";
-import { useEffect } from "react";
+
+import { useEffect, useRef } from "react";
 import { useNavigation } from "@/lib/context/NavigationContext";
-import { SECTIONS } from "@/lib/data/sections";
+import { useLenisInstance } from "@/components/layout/SmoothScroll";
+import { resolveActiveSectionId } from "@/lib/scroll/activeSection";
 
 export function useSectionObserver() {
-    const { setActiveSection } = useNavigation();
+  const { activeSection, setActiveSection } = useNavigation();
+  const lenis = useLenisInstance();
+  const activeRef = useRef(activeSection);
 
-    useEffect(() => {
-        const observers: IntersectionObserver[] = [];
+  useEffect(() => {
+    activeRef.current = activeSection;
+  }, [activeSection]);
 
-        SECTIONS.forEach(({ id }) => {
-            const el = document.getElementById(id);
-            if (!el) return;
+  useEffect(() => {
+    let rafId = 0;
+    let ticking = false;
 
-            const observer = new IntersectionObserver(
-                ([entry]) => {
-                    if (entry.isIntersecting) {
-                        setActiveSection(id);
-                    }
-                },
-                { threshold: 0.4 }  // Section must be 40% visible to be "active"
-            );
+    const sync = () => {
+      ticking = false;
+      const scrollY = lenis?.scroll ?? window.scrollY;
+      const next = resolveActiveSectionId(scrollY);
+      if (next !== activeRef.current) {
+        activeRef.current = next;
+        setActiveSection(next);
+      }
+    };
 
-            observer.observe(el);
-            observers.push(observer);
-        });
+    const schedule = () => {
+      if (ticking) return;
+      ticking = true;
+      rafId = requestAnimationFrame(sync);
+    };
 
-        return () => observers.forEach((o) => o.disconnect());
-    }, [setActiveSection]);
+    schedule();
+
+    if (lenis) {
+      lenis.on("scroll", schedule);
+    } else {
+      window.addEventListener("scroll", schedule, { passive: true });
+    }
+
+    window.addEventListener("resize", schedule);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis?.off("scroll", schedule);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, [lenis, setActiveSection]);
 }

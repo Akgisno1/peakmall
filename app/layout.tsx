@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import { Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { NavigationProvider } from "@/lib/context/NavigationContext";
+import { SmoothScrollProvider } from "@/components/layout/SmoothScroll";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,11 +25,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${cormorant.variable}`}>
-      <body className="bg-brand-black text-brand-white antialiased">
-        <NavigationProvider>
-          {children}
-        </NavigationProvider>
+    <html
+      lang="en"
+      className={`${inter.variable} ${cormorant.variable}`}
+      suppressHydrationWarning
+    >
+      <body
+        className="bg-brand-black text-brand-white antialiased"
+        suppressHydrationWarning
+      >
+        <SmoothScrollProvider>
+          <NavigationProvider>{children}</NavigationProvider>
+        </SmoothScrollProvider>
       </body>
     </html>
   );
