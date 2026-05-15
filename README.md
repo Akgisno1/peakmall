@@ -1,34 +1,27 @@
 # PeakMall — Interactive Sales Deck
 
-A cinematic, non-linear browser sales deck for **American Dream Mall** (East Rutherford, NJ): a luxury, scroll-driven presentation for retail tenants, sponsors, and event partners.
+**American Dream Mall** · East Rutherford, NJ  
+**Live site:** _add your Vercel URL here after deploy_
 
-**Live demo:** Deploy to [Vercel](https://vercel.com) and add your URL here.
+This is my submission for the PeakMall / Liat assignment: a single-page, scroll-based sales deck (not a full marketing site). The idea is that someone leasing space, sponsoring an activation, or booking a venue can land on one URL and move through the story in whatever order they want—similar in spirit to Digideck, but built with Next.js so I could control motion, layout, and performance.
 
 ---
 
 ## Tech stack
 
-| Layer | Technology |
-|--------|------------|
-| Framework | [Next.js 16](https://nextjs.org) (App Router) |
-| Language | TypeScript |
-| Styling | Tailwind CSS v4 |
-| UI primitives | Radix UI / shadcn-style components |
-| Animation | GSAP 3 + ScrollTrigger, `@gsap/react` |
-| Smooth scroll | [Lenis](https://github.com/darkroomengineering/lenis) |
-| Fonts | Cormorant Garamond (display), Inter (body) via `next/font` |
-| Deployment | Vercel (recommended) |
+- **Next.js 16** (App Router) + **TypeScript**
+- **Tailwind CSS v4** for styling and responsive layout
+- **GSAP 3** + ScrollTrigger for scroll animations and section reveals
+- **Lenis** for smooth scrolling (works with ScrollTrigger)
+- **next/font** — Cormorant Garamond (headlines) and Inter (body)
+- Small UI pieces from the **shadcn / Radix** setup in the repo
+- **Vercel** for deployment
 
 ---
 
-## Getting started
+## How to run it locally
 
-### Prerequisites
-
-- Node.js 20+ (22 LTS recommended)
-- npm 10+
-
-### Install & run
+You need Node.js 20+ and npm.
 
 ```bash
 git clone <your-repo-url>
@@ -37,139 +30,110 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Then open [http://localhost:3000](http://localhost:3000).
 
-### Other scripts
-
-```bash
-npm run build    # Production build
-npm run start    # Serve production build
-npm run lint     # ESLint
-npm run generate-logos   # Regenerate tenant monogram PNGs in public/images/logos/
-```
-
-### Environment
-
-No required env vars for local development. Add `.env.local` only if you extend the project (analytics, CMS, etc.).
-
----
-
-## Project structure
-
-```
-peakmall/
-├── app/                    # Next.js App Router (layout, page, globals)
-├── components/
-│   ├── layout/             # Navbar, SideProgress, SmoothScroll, SectionWrapper
-│   ├── sections/           # Hero, Why, Retail, Luxury, Dining, Attractions, Events, CTA
-│   └── ui/                 # Buttons, cards, BrandLogo, VideoBackground
-├── lib/
-│   ├── data/               # Content: stats, tenants, events, sections
-│   ├── gsap/               # Animation helpers & easings
-│   ├── scroll/             # Active section detection (scroll spy)
-│   └── context/            # Navigation + Lenis scroll-to-section
-├── public/
-│   ├── images/             # Section photography & retail backgrounds
-│   ├── images/logos/       # Tenant logo PNGs
-│   └── videos/             # Hero background video
-├── scripts/
-│   └── generate-logos.mjs  # Batch logo generator (sharp)
-└── steps/                  # Build guide (assignment reference)
-```
-
----
-
-## Design decisions
-
-### Visual language
-
-- **Palette:** Near-black (`#0A0A0A`), champagne gold (`#C9A96E`), warm cream text — aligned with luxury retail decks (Hermès / Apple keynote tone).
-- **Typography:** Editorial serif headlines (Cormorant Garamond) + clean sans body (Inter) for data and UI.
-- **Layout:** Full-viewport sections, generous spacing, glass cards, gold accents on CTAs.
-
-### Interaction model
-
-- **Non-linear navigation:** Desktop nav, tablet chapter strip, mobile drawer, and right-side progress dots all jump to sections via smooth Lenis scroll.
-- **Scroll spy:** Active section is derived from scroll position (not fragile per-section IntersectionObservers), so the navbar indicator stays correct during fast scrolling.
-- **Motion:** GSAP entrance reveals and scrubbed parallax on key hero/luxury visuals; restrained easing (`power3`) for a premium feel.
-
-### Responsive breakpoints
-
-| Range | Behavior |
-|--------|----------|
-| **Mobile** (`< 768px`) | Hamburger → side drawer (~85vw max 320px) with chapter titles; Partner CTA in drawer |
-| **Tablet** (`768px – 1023px`) | Same hamburger drawer at **60% width**; side progress dots; wider container padding |
-| **Desktop** (`≥ 1024px`) | Full horizontal nav with animated gold underline; full chapter labels |
-
-### Content architecture
-
-- Section copy and stats live in `lib/data/*` for easy updates without touching UI.
-- Retail **tenant mix** uses per-category background images and logo slots wired to `public/images/logos/{slug}.png`.
-
----
-
-## AI tools used
-
-| Tool | How it was used |
-|------|------------------|
-| **Cursor (Claude / Composer)** | Architecture, components, GSAP patterns, bug fixes, README |
-| **Adobe Express** (user workflow) | Hero, section backgrounds, venue/attraction photography per `ASSET_GENERATION.md` |
-| **Script: `generate-logos.mjs`** | Programmatic gold monogram PNGs for tenant grid (initials on dark — placeholders until official brand assets) |
-
-We did **not** use AI to reproduce trademark logos; deck uses monograms or your uploaded assets.
-
----
-
-## Assets
-
-See **[ASSET_GENERATION.md](./ASSET_GENERATION.md)** for filenames, resolutions, and Adobe Express prompts.
-
-After adding images:
+Other commands I used while building:
 
 ```bash
-public/images/           # .png backgrounds
-public/images/logos/     # .png per tenant slug
-public/videos/hero-bg.mp4
+npm run build          # check production build
+npm run start          # run build locally
+npm run lint
+npm run generate-logos   # rebuilds placeholder logos in public/images/logos/
 ```
 
----
-
-## Deployment (Vercel)
-
-1. Push the repo to GitHub.
-2. Import the project in [Vercel](https://vercel.com/new).
-3. Framework preset: **Next.js** (default).
-4. Deploy — no extra build settings required.
+I didn’t need any `.env` variables for the version I’m submitting.
 
 ---
 
-## Design rationale & future improvements
+## Repo layout (quick map)
 
-### Rationale (short write-up)
-
-This deck treats American Dream as a **destination platform**, not a traditional mall site. The narrative order mirrors a sales conversation: emotional hook (hero) → proof of scale (why) → category depth (retail, luxury, dining, attractions, events) → partnership CTA.
-
-**Video and motion** establish scale within seconds; **data blocks** (40M visitors, 3M sq ft) anchor credibility; **tenant and venue visuals** make the opportunity tangible for leasing, sponsorship, and events audiences.
-
-Navigation is intentionally **multi-modal** (nav bar, side dots, in-section CTAs) because decision-makers skim non-linearly — similar to Digideck-style decks, implemented as a single performant URL.
-
-### What we would improve with more time
-
-1. **Real brand assets** — Replace monogram logos with licensed SVGs from press kits; add WebP/AVIF variants and `next/image` priority for LCP.
-2. **Phase 2 modules** — Dedicated `/modules/events`, `/modules/leasing`, `/modules/sponsorship` routes with deeper forms and CMS-backed content.
-3. **Performance pass** — Lighthouse 90+ audit: lazy video, reduced GSAP on mobile, `prefers-reduced-motion` fallbacks.
-4. **Analytics** — Section-level engagement tracking to see which story beats convert in live sales meetings.
-5. **Accessibility** — Focus traps in mobile menu (partially addressed), skip links, reduced-motion, contrast audit on gold-on-black text.
-6. **Content admin** — Sanity or Contentful so non-developers can update tenants and stats without redeploying.
+- `app/` — layout, main page, global styles  
+- `components/sections/` — Hero, Why, Retail, Luxury, Dining, Attractions, Events, CTA  
+- `components/layout/` — Navbar, side progress dots, smooth scroll wrapper  
+- `lib/data/` — copy, stats, tenants, events (easier to edit than hard-coding in JSX)  
+- `public/images/` and `public/videos/` — photography and hero video  
+- `public/images/logos/` — one PNG per tenant name (slug-based filenames)  
+- `steps/` and `ASSIGNMENT.md` — original brief I followed  
+- `ASSET_GENERATION.md` — notes I kept for image sizes and Adobe Express prompts  
 
 ---
 
-## Assignment reference
+## Design choices
 
-Built for the PeakMall / Liat interactive sales deck assignment. See `ASSIGNMENT.md` and `steps/` for the original brief and section checklist.
+I wanted the deck to feel **premium and calm**, not like a busy e-commerce site. Most of the UI sits on near-black (`#0A0A0A`) with gold accents (`#C9A96E`) and cream text, which matches the luxury-mall direction from the assignment.
+
+**Typography:** Cormorant for big headlines (editorial feel) and Inter for stats, nav, and body text.
+
+**Sections:** Each major beat is basically a full viewport height so it reads like a presentation. The hero uses a background video; other sections use stills I generated or placed under `public/images/`.
+
+**Navigation:**  
+- **Desktop (1024px+):** horizontal nav with a gold underline that follows the active section.  
+- **Mobile and tablet (below 1024px):** hamburger that opens a side drawer (60% width on tablet). All chapter names are listed there so you can jump to any section.  
+- **Right side:** progress dots from tablet size upward so you can still scan where you are in the deck.
+
+Scrolling uses Lenis; clicking a nav item scrolls to that section. I fixed an issue where the active indicator would get “stuck” if you scrolled quickly through multiple sections—now it tracks scroll position on every frame instead of relying only on Intersection Observer thresholds.
+
+**Retail tenant mix:** Switching categories (Luxury, Premium, etc.) swaps the background image and shows a grid of brands with logo slots. Filenames are based on a slug of the tenant name (see `lib/assets.ts`).
 
 ---
 
-## License
+## Responsive behavior
 
-Private / assignment submission — update license as required by your institution or client.
+| Screen | What you get |
+|--------|----------------|
+| Phone | Hamburger menu + drawer, partner CTA inside the drawer |
+| Tablet | Same drawer (60% width) + side dots |
+| Desktop | Full top nav + partner button in the header |
+
+---
+
+## AI tools (how I actually used them)
+
+**Adobe Express — text-to-image**  
+I used this for most of the photography-style assets (hero still, map, luxury interior, retail category backgrounds, venues, attractions, dining strips). I kept a list of prompts and filenames in `ASSET_GENERATION.md` because Express generates one image at a time, not a whole folder in one go.
+
+**AI-assisted coding (Cursor)**  
+I used Cursor while building and debugging—especially for GSAP/Lenis integration, the navbar drawer, and Tailwind v4 theme setup. I still reviewed and edited the code myself; it’s not a copy-paste-only project.
+
+**Logo placeholders**  
+For tenant logos I wrote a small Node script (`scripts/generate-logos.mjs`) that exports simple gold monogram PNGs (initials on dark). These are **not** real trademark logos—I’d replace them with official brand assets in a production version.
+
+I did **not** use AI to fake recognizable brand logos.
+
+---
+
+## Deploying to Vercel
+
+1. Push the repo to GitHub.  
+2. Import it on [vercel.com](https://vercel.com) as a Next.js project.  
+3. Deploy with default settings.  
+4. Paste the live URL at the top of this README and in your submission email.
+
+---
+
+## Write-up: rationale, AI, and what I’d do next
+
+### Why I built it this way
+
+The brief asked for something that feels like Apple / luxury retail—not a generic mall homepage. I structured the page as a **sales narrative**: hook with scale (hero + video), prove the market (why / stats), then walk through retail, luxury, dining, attractions, and events before asking for contact.
+
+I cared a lot about **non-linear navigation** because the assignment compares this to Digideck. In a real pitch, people jump around. So every section is reachable from the nav, the drawer, and the side dots without breaking scroll position.
+
+Motion is there to hold attention (hero text reveal, cards fading in on scroll, parallax on the luxury header on desktop), but I tried not to overdo it—fast easing everywhere feels cheap for this audience.
+
+### What I’d improve with more time
+
+- Swap monogram logos for real press-kit SVGs/PNGs and optimize images (WebP, proper `sizes` on `next/image`).  
+- Hit a proper Lighthouse pass (lazy-load video, less JS on mobile, `prefers-reduced-motion`).  
+- Build the Phase 2 sub-pages from the brief (events module, leasing paths, sponsorship tiers) instead of only teasing them in the CTA section.  
+- Hook up a simple CMS so marketing could change tenant lists without redeploying.  
+- Add basic analytics (which sections people actually scroll to) if this were used in live sales meetings.
+
+---
+
+## Submission notes
+
+- Assignment details: `ASSIGNMENT.md`  
+- Build checklist I referenced: `steps/`  
+
+If anything doesn’t run, start with `npm install` and `npm run build`—that’s what I used to verify before submit.
